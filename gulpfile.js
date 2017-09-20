@@ -38,10 +38,6 @@ gulp.task('clean', function () {
 //自動補上前贅詞，屬於postcss的延伸套件
 var autoprefixer = require('autoprefixer');
 
-gulp.task('CopyHtml',function(){
-    return gulp.src('./source/**/*.html')     
-    .pipe(gulp.dest('./public/'))
-})
 
 gulp.task('CopyAll',function(){
     return gulp.src('./source/**/*.*')     
@@ -49,6 +45,24 @@ gulp.task('CopyAll',function(){
     .pipe(browserSync.stream());
 })
 
+gulp.task('CopyHtml',function(){
+    return gulp.src('./source/**/*.html')     
+    .pipe(gulp.dest('./public/'))
+    .pipe(browserSync.stream());
+})
+
+
+gulp.task('CopyJS',function(){
+    return gulp.src('./source/js/*.js')     
+    .pipe(gulp.dest('./public/js'))
+    .pipe(browserSync.stream());
+})
+
+gulp.task('CopyCSS',function(){
+    return gulp.src('./source/css/*.css')     
+    .pipe(gulp.dest('./public/css'))
+    .pipe(browserSync.stream());
+})
 
 
 
@@ -134,7 +148,8 @@ gulp.task('browser-sync', function() {
     browserSync.init({
         server: {
             baseDir: "./public"
-        }
+        },
+        reloadDebounce: 200
     });
 });
 
@@ -152,7 +167,9 @@ gulp.task('image-min', () =>
 // });
 
 gulp.task('watch', function () {
-  gulp.watch('./source/**/*.*', ['CopyAll']);
+  gulp.watch('./source/**/*.html', ['CopyHtml']);
+  gulp.watch('./source/js/*.js', ['CopyJS']);
+  gulp.watch('./source/**/*.css', ['CopyCSS']);
 });
 
 
